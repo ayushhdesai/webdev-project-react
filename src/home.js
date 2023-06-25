@@ -4,6 +4,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 
 const Home = () => {
   const [user, setUser] = useState(null);
+  const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -15,7 +16,17 @@ const Home = () => {
       }
     };
 
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/announcements');
+        setAnnouncements(response.data);
+      } catch (error) {
+        console.error('Failed to fetch announcements.');
+      }
+    };
+
     fetchUser();
+    fetchAnnouncements();
   }, []);
 
   return (
@@ -28,14 +39,20 @@ const Home = () => {
             <Nav.Link href="/search">Search Books</Nav.Link>
             {user ? (
               <>
-                  <Nav.Link href="/profile">My Profile</Nav.Link>
-                  {user.type === 'regular' && (
+                <Nav.Link href="/profile">My Profile</Nav.Link>
+                {user.type === 'regular' && <Nav.Link href="/clubs">Join Clubs</Nav.Link>}
+                {user.type === 'author' && (
+                  <>
                     <Nav.Link href="/clubs">Join Clubs</Nav.Link>
-                  )}
-                  
-                  {user.type === 'clubOrganizer' && (
+                    <Nav.Link href="/announcements">Announcements</Nav.Link>
+                  </>
+                )}
+                {user.type === 'clubOrganizer' && (
+                  <>
                     <Nav.Link href="/create-club">Create Club</Nav.Link>
-                  )}
+                    <Nav.Link href="/manage-clubs">Manage Clubs</Nav.Link>
+                  </>
+                )}
               </>
             ) : (
               <>
@@ -46,6 +63,23 @@ const Home = () => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
+
+      {/* Display Announcements */}
+      <div className="container mt-4">
+        <h2>Announcements</h2>
+        {announcements.length === 0 ? (
+          <p>No announcements available.</p>
+        ) : (
+          announcements.map((announcement) => (
+            <div key={announcement._id} className="mb-3">
+              <h4>{announcement.title}</h4>
+              <p>{announcement.content}</p>
+              <small className="text-muted">Posted by: {announcement.authorId}</small>
+              <p className="text-muted">Created at: {new Date(announcement.createdAt).toLocaleString()}</p>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };

@@ -7,7 +7,11 @@ import Profile from './profile';
 import Search from './search';
 import CreateClub from './CreateClub';
 import Clubs from './clubs';
-import BookDetails from './BookDetails';
+import ManageClubs from './ManageClub';
+import ClubDetails from './ClubDetails';
+import ClubPage from './ClubPage';
+import BookPage from './BookPage';
+import Announcement from './Announcement';
 import './App.css';
 
 const App = () => {
@@ -28,7 +32,11 @@ const App = () => {
         <Route path="/profile" element={<Profile user={user} />} />
         <Route path="/create-club" element={<CreateClub />} />
         <Route path="/clubs" element={<Clubs />} />
-        <Route path="/book/:id" element={<BookDetails />} />
+        <Route path="/manage-clubs" element={<ManageClubs />} />
+        <Route path="/club/:clubId" element={<ClubDetails />} />
+        <Route path="/club1/:clubId" element={<ClubPage />} />
+        <Route path="/book/:bookId" element={<BookPage />} />
+        <Route path="/announcements" element={<Announcement />} />
       </Routes>
     </Router>
   );

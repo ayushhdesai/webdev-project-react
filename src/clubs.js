@@ -19,11 +19,12 @@ const Clubs = () => {
     const fetchUserClubs = async () => {
       try {
         const response = await axios.get('http://localhost:5000/user-clubs', { withCredentials: true });
-        setUserClubs(response.data.map(club => club.clubId));
+        setUserClubs(response.data.joinedClubs.map(club => club._id));
       } catch (error) {
         console.error('Failed to fetch user clubs.');
       }
     };
+
 
     fetchClubs();
     fetchUserClubs();

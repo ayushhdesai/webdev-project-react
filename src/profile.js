@@ -51,13 +51,29 @@ const Profile = () => {
     }
   };
 
+  // Add this function inside Profile component
+const handleDeleteAccount = async () => {
+  if (window.confirm('Are you sure you want to delete your account?')) {
+      try {
+          await axios.delete('http://localhost:5000/delete-account', { withCredentials: true });
+          navigate('/login');
+      } catch (error) {
+          console.error('Failed to delete account.');
+      }
+  }
+};
+
+
   return (
     <div>
       <Navbar bg="light" expand="lg">
         <Navbar.Brand href="/">Home</Navbar.Brand>
         <Nav className="ml-auto">
           {user && (
+            <>
             <Button variant="outline-primary" onClick={handleLogout}>Logout</Button>
+            <Button variant="danger" onClick={handleDeleteAccount}>Delete Account</Button>
+            </>
           )}
         </Nav>
       </Navbar>
@@ -72,7 +88,9 @@ const Profile = () => {
                 <h2>Clubs you've joined:</h2>
                 <ul>
                   {joinedClubs.map((club) => (
-                    <li key={club._id}>{club.name}</li>
+                    <li key={club._id}>
+                      <a href={`/club1/${club._id}`}>{club.name}</a>
+                    </li>
                   ))}
                 </ul>
               </div>
