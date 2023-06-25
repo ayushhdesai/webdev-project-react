@@ -55,10 +55,6 @@ const BookPage = () => {
     }
   };
   
-  const handleUserClick = (userId) => {
-    // Redirect to the user page, assuming it's in the path /user/:userId
-    window.location.href = `/user/${userId}`;
-  };
   
 
   return (
@@ -76,15 +72,22 @@ const BookPage = () => {
           </form>
           <h3>Reviews:</h3>
           <ul>
-            {reviews.map((review) => (
-              <li key={review._id}>
+          {reviews.map((review) => (
+            <li key={review._id}>
                 <p>{review.content}</p>
-                <p onClick={() => handleUserClick(review.userId)}>By: {review.userId}</p>
+                <p
+                    onClick={() =>
+                        review.userId &&
+                        window.alert(`Username: ${review.userId.username}\nFirst Name: ${review.userId.firstName}\nLast Name: ${review.userId.lastName}`)
+                    }
+                >
+                    By: {review.userId ? `${review.userId.username}` : 'Unknown'}
+                </p>
                 <button onClick={() => handleToggleLike(review._id)}>
-                  {likeStatus[review._id] ? 'Unlike' : 'Like'} ({likeCounts[review._id] || 0})
+                    {likeStatus[review._id] ? 'Unlike' : 'Like'} ({likeCounts[review._id] || 0})
                 </button>
-              </li>
-            ))}
+            </li>
+        ))}
           </ul>
         </div>
       ) : (

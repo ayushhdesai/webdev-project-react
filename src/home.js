@@ -18,7 +18,7 @@ const Home = () => {
 
     const fetchAnnouncements = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/announcements');
+        const response = await axios.get('http://localhost:5000/announcement');
         setAnnouncements(response.data);
       } catch (error) {
         console.error('Failed to fetch announcements.');
@@ -74,9 +74,12 @@ const Home = () => {
             <div key={announcement._id} className="mb-3">
               <h4>{announcement.title}</h4>
               <p>{announcement.content}</p>
-              <small className="text-muted">Posted by: {announcement.authorId}</small>
+              <small className="text-muted">
+                Posted by: {announcement.authorId ? `${announcement.authorId.firstName} ${announcement.authorId.lastName}` : 'Unknown'}
+              </small>
               <p className="text-muted">Created at: {new Date(announcement.createdAt).toLocaleString()}</p>
             </div>
+
           ))
         )}
       </div>

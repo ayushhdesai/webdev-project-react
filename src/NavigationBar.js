@@ -1,31 +1,40 @@
 import React from "react";
-import { FaHome, FaHashtag, FaBell, FaEnvelope, FaBookmark, FaList, FaUser, FaEllipsisH } from "react-icons/fa";
+import {
+    FaHome,
+    FaSearch,
+    FaUser,
+    FaSignInAlt,
+    FaUserPlus,
+    FaPlusSquare,
+    FaBook,
+} from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-
 import "./index.css";
 
-const NavigationSidebar = () => {
+const NavigationSidebar = ({ user }) => {
     const { pathname } = useLocation();
     const [, , active] = pathname.split("/");
     const links = [
         { name: "home", icon: FaHome },
-        { name: "explore", icon: FaHashtag },
-        { name: "notifications", icon: FaBell },
-        { name: "messages", icon: FaEnvelope },
-        { name: "bookmarks", icon: FaBookmark },
-        { name: "lists", icon: FaList },
+        { name: "search", icon: FaSearch },
         { name: "profile", icon: FaUser },
-        { name: "more", icon: FaEllipsisH },
     ];
-    const { currentUser } = useSelector((state) => state.user);
+
+    if (user && user.type === 'author') {
+        links.push({ name: "announcements", icon: FaBook });
+    }
+
+    if (user && user.type === 'clubOrganizer') {
+        links.push({ name: "create-club", icon: FaPlusSquare });
+        links.push({ name: "manage-clubs", icon: FaBook });
+    }
 
     return (
         <div className="list-group">
             {links.map((link) => (
                 <Link
                     key={link.name}
-                    to={`/tuiter/${link.name}`}
+                    to={`/${link.name}`}
                     className={`list-group-item text-capitalize ${active === link.name ? "active" : ""}`}
                 >
                     <span style={{ display: "flex", alignItems: "center" }}>
@@ -34,20 +43,15 @@ const NavigationSidebar = () => {
                     </span>
                 </Link>
             ))}
-            {!currentUser && (
-                <Link className="list-group" to="/tuiter/login">
-                    Login
-                </Link>
-            )}
-            {!currentUser && (
-                <Link className="list-group" to="/tuiter/register">
-                    Register
-                </Link>
-            )}
-            {currentUser && (
-                <button className="btn btn-primary rounded-pill tuit-btn">
-                    Tuit
-                </button>
+            {!user && (
+                <>
+                    <Link className="list-group" to="/login">
+                        <FaSignInAlt /> Login
+                    </Link>
+                    <Link className="list-group" to="/register">
+                        <FaUserPlus /> Register
+                    </Link>
+                </>
             )}
         </div>
     );

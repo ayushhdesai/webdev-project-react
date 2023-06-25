@@ -18,7 +18,7 @@ const Search = () => {
   };
 
   const handleBookClick = (bookId) => {
-    navigate(`/book/${bookId}`); // Use the navigate function to navigate to the book details page
+    navigate(`/book1/${bookId}`); 
   };
 
   return (
