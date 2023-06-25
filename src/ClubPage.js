@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const ClubPage = () => {
   const [club, setClub] = useState(null);
@@ -12,10 +14,10 @@ const ClubPage = () => {
   useEffect(() => {
     const fetchClubDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/club/${clubId}`);
+        const response = await axios.get(`${SERVER_API_URL}/club/${clubId}`);
         setClub(response.data);
 
-        const booksResponse = await axios.get(`http://localhost:5000/club/${clubId}/books`);
+        const booksResponse = await axios.get(`${SERVER_API_URL}/club/${clubId}/books`);
         setBooks(booksResponse.data);
       } catch (error) {
         console.error('Failed to fetch club details.');
@@ -23,7 +25,7 @@ const ClubPage = () => {
     };
     const fetchClubAuthors = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/club/${clubId}/authors`);
+        const response = await axios.get(`${SERVER_API_URL}/club/${clubId}/authors`);
         setAuthors(response.data);
       } catch (error) {
         console.error('Error fetching club members');

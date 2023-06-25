@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Form, Button, Container } from 'react-bootstrap';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const CreateClub = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +17,7 @@ const CreateClub = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/create-club', formData, { withCredentials: true });
+      await axios.post(`${SERVER_API_URL}/create-club`, formData, { withCredentials: true });
       alert('Club created successfully!');
     } catch (error) {
       alert('Failed to create club.');

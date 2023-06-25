@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Form, Button, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const Search = () => {
   const [query, setQuery] = useState('');
@@ -10,7 +12,7 @@ const Search = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/search-books?q=${query}`);
+      const response = await axios.get(`${SERVER_API_URL}/search-books?q=${query}`);
       setBooks(response.data.items);
     } catch (error) {
       console.error('Failed to fetch books.');

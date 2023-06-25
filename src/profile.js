@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Navbar, Nav, Button, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -14,12 +16,12 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/current-user', { withCredentials: true });
+        const response = await axios.get(`${SERVER_API_URL}/current-user`, { withCredentials: true });
         setUser(response.data);
         setFirstName(response.data.firstName);
         setLastName(response.data.lastName);
   
-        const clubsResponse = await axios.get('http://localhost:5000/user-clubs', { withCredentials: true });
+        const clubsResponse = await axios.get(`${SERVER_API_URL}/user-clubs`, { withCredentials: true });
         setJoinedClubs(clubsResponse.data.joinedClubs);
 
         
@@ -33,7 +35,7 @@ const Profile = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/logout', {}, { withCredentials: true });
+      await axios.post(`${SERVER_API_URL}/logout`, {}, { withCredentials: true });
       setUser(null);
       navigate('/login'); 
     } catch (error) {
@@ -43,7 +45,7 @@ const Profile = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.post('http://localhost:5000/update-user', { firstName, lastName }, { withCredentials: true });
+      await axios.post(`${SERVER_API_URL}/update-user`, { firstName, lastName }, { withCredentials: true });
       setUser({ ...user, firstName, lastName });
       setEditing(false);
     } catch (error) {
@@ -55,7 +57,7 @@ const Profile = () => {
 const handleDeleteAccount = async () => {
   if (window.confirm('Are you sure you want to delete your account?')) {
       try {
-          await axios.delete('http://localhost:5000/delete-account', { withCredentials: true });
+          await axios.delete(`${SERVER_API_URL}/delete-account`, { withCredentials: true });
           navigate('/login');
       } catch (error) {
           console.error('Failed to delete account.');

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Navbar, Nav } from 'react-bootstrap';
 
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
+
 const Home = () => {
   const [user, setUser] = useState(null);
   const [announcements, setAnnouncements] = useState([]);
@@ -9,25 +12,26 @@ const Home = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/current-user', { withCredentials: true });
+        const response = await axios.get(`${SERVER_API_URL}/current-user`, { withCredentials: true });
         setUser(response.data);
       } catch (error) {
         console.error('Failed to fetch user.');
       }
     };
-
+  
     const fetchAnnouncements = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/announcement');
+        const response = await axios.get(`${SERVER_API_URL}/announcement`);
         setAnnouncements(response.data);
       } catch (error) {
         console.error('Failed to fetch announcements.');
       }
     };
-
+  
     fetchUser();
     fetchAnnouncements();
   }, []);
+  
 
   return (
     <div>

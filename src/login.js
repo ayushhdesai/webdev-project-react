@@ -4,6 +4,8 @@ import { Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const Login = ({ onLogin }) => {
   const [formData, setFormData] = useState({
@@ -20,7 +22,7 @@ const Login = ({ onLogin }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/login', formData, { withCredentials: true });
+      const response = await axios.post(`${SERVER_API_URL}/login`, formData, { withCredentials: true });
       onLogin(response.data.user);
       navigate('/home'); // Redirect to home page
     } catch (error) {

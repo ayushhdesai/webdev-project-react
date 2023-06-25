@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, ListGroup, Button } from 'react-bootstrap';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const Clubs = () => {
   const [clubs, setClubs] = useState([]);
@@ -9,7 +11,7 @@ const Clubs = () => {
   useEffect(() => {
     const fetchClubs = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/clubs');
+        const response = await axios.get(`${SERVER_API_URL}/clubs`);
         setClubs(response.data);
       } catch (error) {
         console.error('Failed to fetch clubs.');
@@ -18,7 +20,7 @@ const Clubs = () => {
 
     const fetchUserClubs = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/user-clubs', { withCredentials: true });
+        const response = await axios.get(`${SERVER_API_URL}/user-clubs`, { withCredentials: true });
         setUserClubs(response.data.joinedClubs.map(club => club._id));
       } catch (error) {
         console.error('Failed to fetch user clubs.');
@@ -32,7 +34,7 @@ const Clubs = () => {
 
   const handleJoin = async (clubId) => {
     try {
-      await axios.post('http://localhost:5000/join-club', { clubId }, { withCredentials: true });
+      await axios.post(`${SERVER_API_URL}/join-club`, { clubId }, { withCredentials: true });
       alert('Joined the club successfully');
       setUserClubs([...userClubs, clubId]);
     } catch (error) {

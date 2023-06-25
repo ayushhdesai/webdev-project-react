@@ -4,6 +4,8 @@ import { Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +25,7 @@ const Register = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/register', formData);
+      await axios.post(`${SERVER_API_URL}/register`, formData);
       alert('Registration successful!');
       navigate('/login'); // Redirect to login page
     } catch (error) {

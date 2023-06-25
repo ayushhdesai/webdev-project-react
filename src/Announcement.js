@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const Announcement = () => {
   const [title, setTitle] = useState('');
@@ -14,7 +16,7 @@ const Announcement = () => {
 
   const fetchAnnouncements = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/announcements');
+      const response = await axios.get(`${SERVER_API_URL}/announcements`);
       setAnnouncements(response.data);
     } catch (error) {
       console.error('Error fetching announcements', error);
@@ -23,7 +25,7 @@ const Announcement = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/current-user', { withCredentials: true });
+      const response = await axios.get(`${SERVER_API_URL}/current-user`, { withCredentials: true });
       setUserId(response.data._id); // Assuming the user object has an _id field
     } catch (error) {
       console.error('Error fetching current user', error);
@@ -33,7 +35,7 @@ const Announcement = () => {
   const createAnnouncement = async (event) => {
     event.preventDefault();
     try {
-      await axios.post('http://localhost:5000/announcements/create-announcement', {
+      await axios.post(`${SERVER_API_URL}/announcements/create-announcement`, {
         title,
         content,
       }, { withCredentials: true });
@@ -47,7 +49,7 @@ const Announcement = () => {
 
   const deleteAnnouncement = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/announcements/${id}`, { withCredentials: true });
+      await axios.delete(`${SERVER_API_URL}/announcements/${id}`, { withCredentials: true });
       fetchAnnouncements();
     } catch (error) {
       console.error('Error deleting announcement', error);

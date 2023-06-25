@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const ClubDetails = () => {
     const [club, setClub] = useState(null);
@@ -17,12 +19,12 @@ const ClubDetails = () => {
     useEffect(() => {
       const fetchClubDetails = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/club/${clubId}`);
+          const response = await axios.get(`${SERVER_API_URL}/club/${clubId}`);
           setClub(response.data);
           setName(response.data.name);
           setDescription(response.data.description);
 
-          const booksResponse = await axios.get(`http://localhost:5000/club/${clubId}/books`);
+          const booksResponse = await axios.get(`${SERVER_API_URL}/club/${clubId}/books`);
           setBooks(booksResponse.data);
         } catch (error) {
           console.error('Error fetching club details');
@@ -31,7 +33,7 @@ const ClubDetails = () => {
   
       const fetchClubMembers = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/club/${clubId}/members`);
+          const response = await axios.get(`${SERVER_API_URL}/club/${clubId}/members`);
           setMembers(response.data);
         } catch (error) {
           console.error('Error fetching club members');
@@ -40,7 +42,7 @@ const ClubDetails = () => {
 
       const fetchClubAuthors = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/club/${clubId}/authors`);
+          const response = await axios.get(`${SERVER_API_URL}/club/${clubId}/authors`);
           setAuthors(response.data);
         } catch (error) {
           console.error('Error fetching club members');
@@ -54,7 +56,7 @@ const ClubDetails = () => {
 
     const handleUpdate = async () => {
         try {
-          const response = await axios.post(`http://localhost:5000/update-club/${clubId}`, 
+          const response = await axios.post(`${SERVER_API_URL}/update-club/${clubId}`, 
           {
             name,
             description
@@ -69,7 +71,7 @@ const ClubDetails = () => {
 
       const handleBookSearch = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/search-books?q=${searchQuery}`);
+            const response = await axios.get(`${SERVER_API_URL}/search-books?q=${searchQuery}`);
             setSearchResults(response.data.items || []);
         } catch (error) {
             console.error('Error searching for books', error);
@@ -78,7 +80,7 @@ const ClubDetails = () => {
 
     const handleAddBookToClub = async (book) => {
         try {
-            await axios.post(`http://localhost:5000/add-book-to-club`, {
+            await axios.post(`${SERVER_API_URL}/add-book-to-club`, {
                 clubId,
                 bookId: book.id,
                 title: book.volumeInfo.title,

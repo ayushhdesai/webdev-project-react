@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const BookPage = () => {
   const [book, setBook] = useState(null);
@@ -18,7 +20,7 @@ const BookPage = () => {
         setBook(bookResponse.data);
 
         // Fetch reviews
-        const reviewsResponse = await axios.get(`http://localhost:5000/book-reviews/${bookId}`);
+        const reviewsResponse = await axios.get(`${SERVER_API_URL}/book-reviews/${bookId}`);
         setReviews(reviewsResponse.data);
 
       } catch (error) {
@@ -31,9 +33,9 @@ const BookPage = () => {
   const handlePostReview = async (event) => {
     event.preventDefault();
     try {
-      await axios.post('http://localhost:5000/post-review', { bookId, content: reviewContent }, { withCredentials: true });
+      await axios.post(`${SERVER_API_URL}/post-review`, { bookId, content: reviewContent }, { withCredentials: true });
       // Refresh reviews to reflect the new review
-      const reviewsResponse = await axios.get(`http://localhost:5000/book-reviews/${bookId}`, { withCredentials: true });
+      const reviewsResponse = await axios.get(`${SERVER_API_URL}/book-reviews/${bookId}`, { withCredentials: true });
       setReviews(reviewsResponse.data);
       setReviewContent(''); // clear the input field
     } catch (error) {
@@ -44,7 +46,7 @@ const BookPage = () => {
   const handleToggleLike = async (reviewId) => {
     try {
       const response = await axios.post(
-        'http://localhost:5000/toggle-like',
+        `${SERVER_API_URL}/toggle-like`,
         { reviewId },
         { withCredentials: true }
       );

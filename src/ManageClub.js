@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
+const SERVER_API_URL = `${USERS_URL}`;
 
 const ManageClubs = () => {
   const [clubs, setClubs] = useState([]);
@@ -8,7 +10,7 @@ const ManageClubs = () => {
   useEffect(() => {
     const fetchMyClubs = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/my-clubs', { withCredentials: true });
+        const response = await axios.get(`${SERVER_API_URL}/my-clubs`, { withCredentials: true });
         setClubs(response.data.myClubs);
       } catch (error) {
         console.error('Failed to fetch clubs.');
