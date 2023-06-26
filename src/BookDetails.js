@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom'; // Import useParams hook
-const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
-const SERVER_API_URL = `${USERS_URL}`;
+const SERVER_API_URL = process.env.REACT_APP_SERVER_API_URL;
 
 const BookDetails = () => {
   const { id } = useParams(); // Get the book ID from the URL

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Navbar, Nav, Button, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
-const SERVER_API_URL = `${USERS_URL}`;
+const SERVER_API_URL = process.env.REACT_APP_SERVER_API_URL;
 
 const Profile = () => {
   const [user, setUser] = useState(null);

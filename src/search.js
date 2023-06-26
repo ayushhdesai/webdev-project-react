@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Form, Button, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
-const SERVER_API_URL = `${USERS_URL}`;
+const SERVER_API_URL = process.env.REACT_APP_SERVER_API_URL;
 
 const Search = () => {
   const [query, setQuery] = useState('');

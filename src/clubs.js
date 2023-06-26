@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, ListGroup, Button } from 'react-bootstrap';
-const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
-const SERVER_API_URL = `${USERS_URL}`;
+const SERVER_API_URL = process.env.REACT_APP_SERVER_API_URL;
 
 const Clubs = () => {
   const [clubs, setClubs] = useState([]);

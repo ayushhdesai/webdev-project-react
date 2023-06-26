@@ -4,8 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-const USERS_URL = process.env.REACT_APP_SERVER_API_URL;
-const SERVER_API_URL = `${USERS_URL}`;
+const SERVER_API_URL = process.env.REACT_APP_SERVER_API_URL;
 
 const Login = ({ onLogin }) => {
   const [formData, setFormData] = useState({
