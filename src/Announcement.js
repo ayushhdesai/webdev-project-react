@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-const SERVER_API_URL = process.env.REACT_APP_SERVER_API_URL;
+import { Navbar, Nav, Container, Card, Row, Col, Form, Button } from 'react-bootstrap';
+import { FiUser, FiSearch, FiClipboard, FiPlus } from 'react-icons/fi';
+import WebFont from 'webfontloader';
+
+const SERVER_API_URL = 'https://webdev-project-node-dl4u.onrender.com';
 
 const Announcement = () => {
   const [title, setTitle] = useState('');
@@ -9,6 +13,11 @@ const Announcement = () => {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
+    WebFont.load({
+      google: {
+        families: ['Cinzel:400,700', 'sans-serif'],
+      },
+    });
     fetchAnnouncements();
     fetchCurrentUser();
   }, []);
@@ -57,25 +66,54 @@ const Announcement = () => {
   
 
   return (
-    <div>
-      <h2>Create Announcement</h2>
-      <form onSubmit={createAnnouncement}>
-        <input type="text" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} required />
-        <textarea placeholder="Content" value={content} onChange={e => setContent(e.target.value)} required />
-        <button type="submit">Create</button>
-      </form>
+    <div style={{ fontFamily: 'Cinzel, sans-serif', padding: '20px' }}>
+      <Navbar expand="lg" variant="dark" bg="dark">
+        <Navbar.Brand href="/" style={{ margin: 5, fontFamily: 'Cinzel, sans-serif' }}>TheNovelSociety</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ml-auto">
+            <Nav.Link href="/search"><FiSearch size={20} /> Search Books</Nav.Link>
+            <Nav.Link href="/clubs"> Join Clubs</Nav.Link>
+            <Nav.Link href="/announcements"><FiClipboard /> Announcements</Nav.Link>
+            <Nav.Link href="/profile" className="ml-3">
+              <FiUser size={20} /> Profile
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
 
-      <h2>Your Announcements</h2>
-      {announcements.map(announcement => (
-        announcement.authorId === userId && (
-          <div key={announcement._id}>
-            <h3>{announcement.title}</h3>
-            <p>{announcement.content}</p>
-            <p>Created at: {new Date(announcement.createdAt).toLocaleString()}</p>
-            <button onClick={() => deleteAnnouncement(announcement._id)}>Delete</button>
-          </div>
-        )
-      ))}
+      <Container className="mt-4">
+        <h2>Create Announcement</h2>
+        <Form onSubmit={createAnnouncement}>
+          <Form.Group controlId="announcementTitle">
+            <Form.Control type="text" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} required />
+          </Form.Group><br/>
+          <Form.Group controlId="announcementContent">
+            <Form.Control as="textarea" rows={3} placeholder="Content" value={content} onChange={e => setContent(e.target.value)} required />
+          </Form.Group><br/>
+          <Button variant="primary" type="submit"><FiPlus />Create</Button>
+        </Form>
+
+        <h2 className="mt-5">Your Announcements</h2>
+        <Row>
+          {announcements.map(announcement => (
+            announcement.authorId === userId && (
+              <Col md={4} key={announcement._id} className="mb-3">
+                <Card className="h-100">
+                  <Card.Body>
+                    <Card.Title>{announcement.title}</Card.Title>
+                    <Card.Text>{announcement.content}</Card.Text>
+                    <small className="text-muted">
+                      Created at: {new Date(announcement.createdAt).toLocaleString()}
+                    </small><br/>
+                    <Button variant="danger" className="mt-2" onClick={() => deleteAnnouncement(announcement._id)}>Delete</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            )
+          ))}
+        </Row>
+      </Container>
     </div>
   );
 };

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Card } from 'react-bootstrap';
-import { useParams } from 'react-router-dom'; // Import useParams hook
-const SERVER_API_URL = process.env.REACT_APP_SERVER_API_URL;
+import { useParams } from 'react-router-dom'; 
 
 const BookDetails = () => {
   const { id } = useParams(); // Get the book ID from the URL
@@ -11,7 +10,7 @@ const BookDetails = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const response = await axios.get(`${SERVER_API_URL}/search-books?q=${id}`);
+        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${id}`);
         setBook(response.data.items[0]);
       } catch (error) {
         console.error('Failed to fetch book details.');

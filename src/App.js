@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import BookDetails from './BookDetails';
 import Register from './register';
 import Login from './login';
 import Home from './home';
@@ -12,6 +11,7 @@ import ManageClubs from './ManageClub';
 import ClubDetails from './ClubDetails';
 import ClubPage from './ClubPage';
 import BookPage from './BookPage';
+import YourClub from './YourClub';
 import Announcement from './Announcement';
 import './App.css';
 
@@ -36,8 +36,8 @@ const App = () => {
         <Route path="/manage-clubs" element={<ManageClubs />} />
         <Route path="/club/:clubId" element={<ClubDetails />} />
         <Route path="/club1/:clubId" element={<ClubPage />} />
-        <Route path="/book1/:bookId" element={<BookDetails />} />
         <Route path="/book/:bookId" element={<BookPage />} />
+        <Route path="/your-clubs" element={<YourClub />} />
         <Route path="/announcements" element={<Announcement />} />
       </Routes>
     </Router>

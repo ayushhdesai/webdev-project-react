@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, ListGroup, Button } from 'react-bootstrap';
-const SERVER_API_URL = process.env.REACT_APP_SERVER_API_URL;
+import { Navbar, Nav, Button, Card, Col, Container} from 'react-bootstrap';
+import { FiUser, FiSearch, FiClipboard, FiPlus, FiBook } from 'react-icons/fi';
+import WebFont from 'webfontloader';
+const SERVER_API_URL = 'https://webdev-project-node-dl4u.onrender.com';
 
 const Clubs = () => {
+  const [user, setUser] = useState(null);
   const [clubs, setClubs] = useState([]);
   const [userClubs, setUserClubs] = useState([]);
 
   useEffect(() => {
+
+    WebFont.load({
+      google: {
+        families: ['Cinzel:400,700', 'sans-serif'],
+      },
+    });
+
     const fetchClubs = async () => {
       try {
         const response = await axios.get(`${SERVER_API_URL}/clubs`);
@@ -26,7 +36,16 @@ const Clubs = () => {
       }
     };
 
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`${SERVER_API_URL}/current-user`, { withCredentials: true });
+        setUser(response.data);
+      } catch (error) {
+        console.error('Failed to fetch user.');
+      }
+    };
 
+    fetchUser();
     fetchClubs();
     fetchUserClubs();
   }, []);
@@ -42,21 +61,75 @@ const Clubs = () => {
   };
 
   return (
-    <Container>
-      <h1>Clubs</h1>
-      <ListGroup>
-        {clubs.map((club) => (
-          <ListGroup.Item key={club._id}>
-            {club.name} - {club.description}{' '}
-            {!userClubs.includes(club._id) && (
-              <Button onClick={() => handleJoin(club._id)} variant="primary">
-                Join
-              </Button>
+    <div style={{padding : '20px'}}>
+      <Navbar expand="lg" variant="dark" bg="dark" style={{fontFamily: 'Cinzel, sans-serif'}}>
+        <Navbar.Brand href="/" style={{ margin : 5}}>TheNovelSociety</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ml-auto">
+            <Nav.Link href="/search"><FiSearch size={20}/> Search Books</Nav.Link>
+            {user ? (
+
+              <>
+              {user.type === 'regular' && (
+                  <>
+                    <Nav.Link href="/your-clubs">Your Clubs</Nav.Link>
+                  </>
+                )}
+              
+                {user.type === 'author' && (
+                  <>
+                    <Nav.Link href="/clubs">Join Clubs</Nav.Link>
+                    <Nav.Link href="/announcements"><FiClipboard /> Announcements</Nav.Link>
+                  </>
+                )}
+                {user.type === 'clubOrganizer' && (
+                  <>
+                    <Nav.Link href="/create-club"><FiPlus />Create Club</Nav.Link>
+                    <Nav.Link href="/manage-clubs">Manage Clubs</Nav.Link>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <Nav.Link href="/login">Login</Nav.Link>
+                <Nav.Link href="/register">Register</Nav.Link>
+              </>
             )}
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-    </Container>
+            {user && (
+              <Nav.Link href="/profile" className="ml-3">
+                <FiUser size={20} /> Profile
+              </Nav.Link>
+            )}
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+      <div style={{ margin: '0 auto', padding: '50px' }}>
+        <h2 style={{ marginBottom: '30px', textAlign: 'center' }}><FiBook /> Book Clubs</h2>
+        <Container>
+            {clubs.map((club) => (
+              <Col key={club._id} className="mb-4">
+                <Card>
+                  <Card.Body>
+                    <Card.Title>{club.name}</Card.Title>
+                    <Card.Text>{club.description}</Card.Text>
+                    {userClubs.includes(club._id) ? (
+                      <Button variant="success" disabled>
+                        Joined
+                      </Button>
+                    ) : (
+                      <Button onClick={() => handleJoin(club._id)} variant="primary">
+                        Join
+                      </Button>
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+        </Container>
+      </div>
+
+    </div>
   );
 };
 
